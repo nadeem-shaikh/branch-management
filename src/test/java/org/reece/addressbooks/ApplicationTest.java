@@ -5,14 +5,14 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.reece.addressbooks.models.AddressBook;
-import org.reece.addressbooks.models.ApiResponse;
 import org.reece.addressbooks.models.Contact;
 import org.reece.addressbooks.services.AddressBooksService;
-import org.springframework.http.HttpStatus;
 
 @FixMethodOrder(MethodSorters.DEFAULT)
 public class ApplicationTest {
@@ -27,6 +27,7 @@ public class ApplicationTest {
 	/**
 	 * loadTestData : This Method loads initial test data in Address Books
 	 */
+	@Before
 	public void loadTestData() {
 
 		Contact contact;
@@ -65,14 +66,13 @@ public class ApplicationTest {
 	/**
 	 * validateContact: This test is to check that contact in Address Book has name
 	 * and PhoneNumber
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	public void validateContact() {
 
 		try {
-
-			// call loadTestData() Method to initialize addressBooks
-			loadTestData();
 
 			// Get the first Address Book 1 from the Address Book Map
 			addressBook = AddressBooksService.getInstance().addressBooks.get(0);
@@ -84,6 +84,7 @@ public class ApplicationTest {
 			assertEquals(addressBook.getContacts().get(0).getPhoneNumber().isEmpty(), false);
 		} catch (Exception e) {
 			System.err.println("Error Occurred in validateContact | Error = " + e.toString());
+			Assert.fail("Exception " + e);
 		}
 
 	}
@@ -94,8 +95,6 @@ public class ApplicationTest {
 	@Test
 	public void addContactInAddressBook() {
 		try {
-			// call loadTestData() Method to initialize addressBooks
-			loadTestData();
 
 			AddressBook addressBook = new AddressBook();
 
@@ -114,6 +113,7 @@ public class ApplicationTest {
 					true);
 		} catch (Exception e) {
 			System.err.println("Error Occurred in addContactInAddressBook | Error = " + e.toString());
+			Assert.fail("Exception " + e);
 		}
 	}
 
@@ -124,8 +124,6 @@ public class ApplicationTest {
 	public void removeContactFromAddressBook() {
 
 		try {
-			// call loadTestData() Method to initialize addressBooks
-			loadTestData();
 
 			List<AddressBook> addressBooks = AddressBooksService.getInstance().getAddressBooks();
 
@@ -136,7 +134,7 @@ public class ApplicationTest {
 
 			// get the 1st Contact from the Contacts List of 1st Address Book
 			Contact contact = addressBook.getContacts().get(0);
-			
+
 			// Check that removeContact is successful
 			assertEquals(addressBook.removeContact(contact.getId()), true);
 
@@ -146,6 +144,7 @@ public class ApplicationTest {
 
 		} catch (Exception e) {
 			System.err.println("Error Occurred in removeContactFromAddressBook | Error = " + e.toString());
+			Assert.fail("Exception " + e);
 		}
 	}
 
@@ -164,6 +163,7 @@ public class ApplicationTest {
 			assertEquals(contactList.size() > 0, true);
 		} catch (Exception e) {
 			System.err.println("Error Occurred in getAllContactsFromAddressBook | Error = " + e.toString());
+			Assert.fail("Exception " + e);
 		}
 	}
 
@@ -187,6 +187,7 @@ public class ApplicationTest {
 			assertEquals(findDuplicateContact(contactList), false);
 		} catch (Exception e) {
 			System.err.println("Error Occurred in getUniqueContactsFromAllAddressBooks | Error = " + e.toString());
+			Assert.fail("Exception " + e);
 		}
 
 	}
