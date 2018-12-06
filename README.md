@@ -9,7 +9,7 @@ You will need below tools before you run this application
 3.  Apache Maven 3.6.0 - https://maven.apache.org/download.cgi
 
 
-#Steps to run the project
+# Steps to run the project
 
 1.  git clone https://github.com/nadeem-shaikh/branch-management.git
 2.  cd branch-management
