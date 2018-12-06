@@ -2,9 +2,11 @@ package org.reece.addressbooks;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.reece.addressbooks.models.ApiResponse;
+import org.reece.addressbooks.models.Contact;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
@@ -49,8 +51,42 @@ public class RestControllerTest {
 			assertEquals(strData.equals(strExpectedResponse), true);
 		} catch (Exception e) {
 			System.err.println("Error Occured in testGetAllContactsFromAddressBook | Error = " + e);
+			Assert.fail("Exception " + e);
 
 		}
+	}
+
+	/**
+	 * Add a new Contact to AddressBook 2 and validate that response contain the new
+	 * contact
+	 */
+	@Test
+	public void addContactInAddressBook() {
+		try {
+
+			Contact contact = new Contact();
+			contact = new Contact();
+			contact.setName("Victoria");
+			contact.setPhoneNumber("042908891");
+
+			HttpEntity<Contact> entity = new HttpEntity<Contact>(contact, headers);
+
+			ResponseEntity<String> response = restTemplate.exchange(createURLWithPort("/api/addContactInAddressBook/2"),
+					HttpMethod.POST, entity, String.class);
+
+			ObjectMapper mapper = new ObjectMapper();
+			ApiResponse responseObj = mapper.readValue(response.getBody(), ApiResponse.class);
+			String strData = responseObj.getData().toString().replaceAll("=", ":").replaceAll(" ", "");
+
+			String strNewContact = "{id:3,name:Victoria,phoneNumber:042908891}";
+
+			assertEquals(strData.contains(strNewContact), true);
+
+		} catch (Exception e) {
+			System.err.println("Error Occured in addContactInAddressBook | Error = " + e);
+			Assert.fail("Exception " + e);
+		}
+
 	}
 
 	private String createURLWithPort(String uri) {

@@ -102,8 +102,8 @@ public class ApplicationTest {
 			addressBook = AddressBooksService.getInstance().getAddressBooks().get(0);
 
 			contact = new Contact();
-			contact.setName("Nadeem");
-			contact.setPhoneNumber("0478778401");
+			contact.setName("Zoya");
+			contact.setPhoneNumber("032 890 790");
 
 			// Add Contact in Address Book 1
 			assertEquals(addressBook.addContact(contact), true);
