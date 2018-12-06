@@ -1,8 +1,0 @@
-org/reece/addressbooks/models/ApiResponse.class
-org/reece/addressbooks/services/AddressBooksService.class
-org/reece/addressbooks/models/Contact.class
-org/reece/addressbooks/Application.class
-org/reece/addressbooks/models/AddressBook.class
-org/reece/addressbooks/initDataLoad.class
-org/reece/addressbooks/controllers/AddressBooksController.class
-org/reece/addressbooks/SwaggerConfig.class
