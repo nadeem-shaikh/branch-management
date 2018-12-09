@@ -12,7 +12,7 @@ public class AddressBooksService {
 	private static AddressBooksService addressBooksService;
 	public List<AddressBook> addressBooks;
 
-	public AddressBooksService() {
+	private AddressBooksService() {
 		addressBooks = new ArrayList<AddressBook>();
 	}
 
