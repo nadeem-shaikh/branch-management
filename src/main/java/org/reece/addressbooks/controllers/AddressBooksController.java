@@ -38,23 +38,13 @@ public class AddressBooksController {
 		try {
 			if (contact.getName() != null && contact.getPhoneNumber() != null) {
 				if (!(contact.getName().isEmpty() || contact.getPhoneNumber().isEmpty())) {
-					List<AddressBook> addressBooks = AddressBooksService.getInstance().getAddressBooks();
-
-					// Iterate List of Address Books
-					for (AddressBook ab : addressBooks) {
-
-						// Find Address Book with given AddressBook Id
-						if (ab.getId() == addressBookId) {
-							if (ab.addContact(contact)) {
-								apiResponse = new ApiResponse(AddressBooksService.getInstance().getAddressBooks());
-								apiResponse.setStatus(HttpStatus.CREATED);
-							} else {
-								apiResponse.setMessage("Contact Already Exists");
-								apiResponse.setStatus(HttpStatus.BAD_REQUEST);
-							}
-						}
+					if (AddressBooksService.getInstance().addContact(addressBookId, contact)) {
+						apiResponse = new ApiResponse(AddressBooksService.getInstance().getAddressBooks());
+						apiResponse.setStatus(HttpStatus.CREATED);
+						return apiResponse;
 					}
-					return apiResponse;
+					else
+						throw new Exception("Error in Adding Contact to Address Book");
 				} else
 					// Throw Exception when Contact Name or Phone Number are empty
 					throw new Exception("Contact Name and Phone Number must not empty");
@@ -84,23 +74,7 @@ public class AddressBooksController {
 
 		ApiResponse apiResponse = new ApiResponse();
 		try {
-			List<AddressBook> addressBooks = AddressBooksService.getInstance().getAddressBooks();
-
-			// Iterate List of Address Books
-			for (AddressBook ab : addressBooks) {
-
-				// Find Address Book with given AddressBook Id
-				if (ab.getId() == addressBookId) {
-					if (ab.removeContact(contactId)) {
-						apiResponse = new ApiResponse(AddressBooksService.getInstance().getAddressBooks());
-						apiResponse.setStatus(HttpStatus.ACCEPTED);
-						return apiResponse;
-					} else {
-						// Throw Exception when contact does not exist
-						throw new Exception("Contact Does Not Exist");
-					}
-				}
-			}
+			AddressBooksService.getInstance().removeContact(addressBookId, contactId);
 			// Throw Exception when no Address Book is Found
 			throw new Exception("Address Book Does Not Exist");
 

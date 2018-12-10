@@ -5,14 +5,17 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.reece.addressbooks.models.AddressBook;
 import org.reece.addressbooks.models.Contact;
 import org.reece.addressbooks.services.AddressBooksService;
+import org.springframework.test.context.transaction.AfterTransaction;
 
 @FixMethodOrder(MethodSorters.DEFAULT)
 public class ApplicationTest {
@@ -20,47 +23,44 @@ public class ApplicationTest {
 	private AddressBook addressBook;
 	private Contact contact;
 
-	String[] addressBookNames = { "HOME", "OFFICE" };
-	String[] names = { "John", "Marcus", "Susan", "Henry" };
-	String[] phoneNumbers = { "03 7856 9845", "03 9045 2334", "04 6733 3470", "02 7890 8900" };
+	static String[] addressBookNames = { "HOME", "OFFICE" };
+	static String[] names = { "John", "Marcus", "Susan", "Henry" };
+	static String[] phoneNumbers = { "03 7856 9845", "03 9045 2334", "04 6733 3470", "02 7890 8900" };
 
 	/**
 	 * loadTestData : This Method loads initial test data in Address Books
 	 */
-	@Before
-	public void loadTestData() {
+	@BeforeClass
+	public static void loadTestData() {
 
 		Contact contact;
 		AddressBook addressBook;
 
 		addressBook = new AddressBook(1, addressBookNames[0]);
+		AddressBooksService.getInstance().addAddressBook(addressBook);
 		contact = new Contact();
 		contact.setName(names[0]);
 		contact.setPhoneNumber(phoneNumbers[0]);
-		addressBook.addContact(contact);
+		AddressBooksService.getInstance().addContact(1,contact);
 
 		contact = new Contact();
 		contact.setName(names[1]);
 		contact.setPhoneNumber(phoneNumbers[1]);
-		addressBook.addContact(contact);
+		AddressBooksService.getInstance().addContact(1,contact);
 
-		AddressBooksService.getInstance().addAddressBook(addressBook);
-		AddressBooksService.getInstance().addressBooks.add(addressBook);
-
+		addressBook = null;
 		addressBook = new AddressBook(2, addressBookNames[1]);
+		AddressBooksService.getInstance().addAddressBook(addressBook);
+		
 		contact = new Contact();
 		contact.setName(names[2]);
 		contact.setPhoneNumber(phoneNumbers[2]);
-		addressBook.addContact(contact);
+		AddressBooksService.getInstance().addContact(2,contact);
 
 		contact = new Contact();
 		contact.setName(names[3]);
 		contact.setPhoneNumber(phoneNumbers[3]);
-		addressBook.addContact(contact);
-
-		AddressBooksService.getInstance().addAddressBook(addressBook);
-		AddressBooksService.getInstance().addressBooks.add(addressBook);
-
+		AddressBooksService.getInstance().addContact(2,contact);
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class ApplicationTest {
 			contact.setPhoneNumber("032 890 790");
 
 			// Add Contact in Address Book 1
-			assertEquals(addressBook.addContact(contact), true);
+			assertEquals(AddressBooksService.getInstance().addContact(1,contact), true);
 
 			// Check if the contact added in above statement exists in the Address Book
 			assertEquals(AddressBooksService.getInstance().getAddressBooks().get(0).getContacts().contains(contact),
@@ -136,7 +136,7 @@ public class ApplicationTest {
 			Contact contact = addressBook.getContacts().get(0);
 
 			// Check that removeContact is successful
-			assertEquals(addressBook.removeContact(contact.getId()), true);
+			assertEquals(AddressBooksService.getInstance().removeContact(addressBook.getId(),contact.getId()), true);
 
 			// Check that the contact removed in the above statement no longer exists in
 			// Address Book

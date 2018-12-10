@@ -21,32 +21,30 @@ public class initDataLoad {
 		AddressBook addressBook;
 
 		addressBook = new AddressBook(1, addressBookNames[0]);
+		AddressBooksService.getInstance().addAddressBook(addressBook);
 		contact = new Contact();
 		contact.setName(names[0]);
 		contact.setPhoneNumber(phoneNumbers[0]);
-		addressBook.addContact(contact);
+		AddressBooksService.getInstance().addContact(1,contact);
 
 		contact = new Contact();
 		contact.setName(names[1]);
 		contact.setPhoneNumber(phoneNumbers[1]);
-		addressBook.addContact(contact);
-
-		AddressBooksService.getInstance().addAddressBook(addressBook);
+		AddressBooksService.getInstance().addContact(1,contact);
 
 		addressBook = null;
 		addressBook = new AddressBook(2, addressBookNames[1]);
+		AddressBooksService.getInstance().addAddressBook(addressBook);
+		
 		contact = new Contact();
 		contact.setName(names[2]);
 		contact.setPhoneNumber(phoneNumbers[2]);
-		addressBook.addContact(contact);
+		AddressBooksService.getInstance().addContact(2,contact);
 
 		contact = new Contact();
 		contact.setName(names[3]);
 		contact.setPhoneNumber(phoneNumbers[3]);
-		addressBook.addContact(contact);
-
-		AddressBooksService.getInstance().addAddressBook(addressBook);
-		//AddressBooksService.getInstance().addressBooks.add(addressBook);
+		AddressBooksService.getInstance().addContact(2,contact);
 
 	}
 
